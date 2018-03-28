@@ -63,7 +63,7 @@ Fast keine mehr werden fälschlicherweise als spam erkannt, dafür landen viele 
 | filternonspam     | 2212 | 911 |
 | filterspam     |  19 |  540  |
 
-## Ergebnisse von der Naives Bayes Library
+## Ergebnisse von der Naive Bayes Library
 
 ### Naive Bayes Model
 ![Naive Bayes Model](NaiveBayesModel.png "Naive Bayes Model")
