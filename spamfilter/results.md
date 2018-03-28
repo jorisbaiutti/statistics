@@ -1,5 +1,13 @@
 # Spamfilter Resultate
 
+## Histogram von vorkommenden Tokens
+![will plot](willplot.png "Will Plot")
+![you plot](you.png "you Plot")
+![free plot](free.png "free Plot")
+![remove plot](remove.png "remove Plot")
+![charExclamation plot](charExclamation.png "charExclamation Plot")
+![charDollar plot](charDollar.png "charDollar Plot")
+
 ## einzelne Ergebnisse
 ### threshold grösser als 0
 
