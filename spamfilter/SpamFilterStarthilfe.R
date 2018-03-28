@@ -1,9 +1,13 @@
 #install.packages("caret")
 #install.packages("ggplot2")
 #install.packages("sqldf")
+#install.packages("e1071")
+#install.packages("rmarkdown")
 library(ggplot2)
 library(caret)
 library(sqldf)
+library(e1071)
+library(rmarkdown)
 
 # set the working directory to the proper folder
 # you can either give in the path or click on Session and then Set Working Directory
@@ -60,16 +64,16 @@ createHistogram(trainSet, "charExclamation")
 createHistogram(trainSet, "charDollar")
 
 #Wahrscheinleichkeit, das Wort in einem Spam Mail vorkommt
-probEisSpam <- function(dataSet, event){
+probEisSpam <- function(dataSet, event, threshold){
 
   colNumber <- match(event, names(dataSet))
   
-  nrowSpamandEvent <- nrow(dataSet[dataSet$type == "spam" & dataSet[colNumber] > 0,])
+  nrowSpamandEvent <- nrow(dataSet[dataSet$type == "spam" & dataSet[colNumber] > threshold,])
   nrowSpam <- nrow(dataSet[dataSet$type == "spam",])
   
   pSpamandEvent <- nrowSpamandEvent / nrowSpam
   
-  nrowNonSpamandEvent <- nrow(dataSet[dataSet$type == "nonspam" & dataSet[colNumber] > 0,])
+  nrowNonSpamandEvent <- nrow(dataSet[dataSet$type == "nonspam" & dataSet[colNumber] > threshold,])
   nrowNonSpam <- nrow(dataSet[dataSet$type == "nonspam",])
   
   pNonSpamandEvent <- nrowNonSpamandEvent / nrowNonSpam
@@ -79,11 +83,50 @@ probEisSpam <- function(dataSet, event){
   return(probability)
 }
 
-pExclamation <- probEisSpam(trainSet, "charExclamation")
+pwill <- probEisSpam(trainSet, "will",0)
+pwill
+pyou <- probEisSpam(trainSet, "you",0)
+pyou
+pfree <- probEisSpam(trainSet, "free",0)
+pfree
+premove <- probEisSpam(trainSet, "remove",0)
+premove
+pExclamation <- probEisSpam(trainSet, "charExclamation",0)
+pExclamation
+pDollar <- probEisSpam(trainSet, "charDollar",0)
+pDollar
 
 
+#Create confusion matrix for training charExclamation
+trainSet$singlecharExclamation <- "filternonspam"
+trainSet$singlecharExclamation[trainSet$charExclamation > 0] <- "filterspam"
+table(trainSet$singlecharExclamation, trainSet$type)
 
+#Create confusion matrix for training remove
+trainSet$singleremove <- "filternonspam"
+trainSet$singleremove[trainSet$remove > 1] <- "filterspam"
+table(trainSet$singleremove, trainSet$type)
 
+#Create confusion matrix for both
+trainSet$both <- "filternonspam"
+trainSet$both[trainSet$remove > 0 & trainSet$charExclamation > 0] <- "filterspam"
+table(trainSet$both, trainSet$type)
 
 
 View(trainSet)
+
+# Results with Naive Bayes Library
+trainSet <- NULL
+testSet <- NULL
+
+trainSet <- spam[trainIndex, ]
+testSet <- spam[-trainIndex,]
+
+Naive_Bayes_Model <- naiveBayes(type ~., data=trainSet)
+Naive_Bayes_Model
+
+#Prediction on the dataset
+NB_Predictions <- predict(Naive_Bayes_Model,testSet)
+table(NB_Predictions,testSet$type)
+
+

@@ -9,7 +9,16 @@
 ![charDollar plot](charDollar.png "charDollar Plot")
 
 ## einzelne Ergebnisse
-### threshold grösser als 0
+### Propability (Spam|Event)
+* will: 0.9317794
+* you: 0.9327523
+* free: 0.9818349
+* remove: 0.9961374
+* charExclamation: 0.9655759
+* charDollar: 0.9803652
+
+
+### threshold grösser als 0 charExclamation
 
 
 |         | nonspam           | spam  |
@@ -19,7 +28,7 @@
 
 Es werden noch fast 600 Mails als spam vom filter erkannt, obwohl sie eigentlich nicht spam sind.
 
-### threshold grösser als 1
+### threshold grösser als 1 charExclamation
 
 |         | nonspam           | spam  |
 | ------------- |:-------------:| :-----:|
@@ -27,3 +36,42 @@ Es werden noch fast 600 Mails als spam vom filter erkannt, obwohl sie eigentlich
 | filterspam     | 30 |  190  |
 
 Nun haber wir über 1200 spam Mails in der Mailbox :(
+
+### threshold grösser als 0 remove
+
+
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 2198 | 836 |
+| filterspam     | 33 |  615  |
+
+Mit Remove werden viel weniger als spam erkannt obwohl es gar keine spam Mails sind
+
+### threshold grösser als 1 remove
+
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 2226 | 1327 |
+| filterspam     |  5 |  124  |
+
+Fast keine mehr werden fälschlicherweise als spam erkannt, dafür landen viele Spam Mails im Posteingang.
+
+### threshold grösser als 0 remove und charExclamation
+
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 2212 | 911 |
+| filterspam     |  19 |  540  |
+
+## Ergebnisse von der Naives Bayes Library
+
+### Naive Bayes Model
+![Naive Bayes Model](NaiveBayesModel.png "Naive Bayes Model")
+
+### Resultate von Model mit TestSet
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 540 | 143 |
+| filterspam     |  17 |  219  |
+
+
