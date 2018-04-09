@@ -77,6 +77,11 @@ threshold 0.1 weil bei free die meisten welche als spam klassifiziert wurden bei
 | ------------- |:-------------:| :-----:|
 | filternonspam     | 555 | 251 |
 | filterspam     |  2 |  111  |
+
+
+**Barchart**
+
+
 ![free remove table graph](freeremoveresultgraph.png "free remove table graph")
 
 ## Ergebnisse von der Naive Bayes Library
