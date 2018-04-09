@@ -16,7 +16,7 @@
 * remove: 0.9961374
 * charExclamation: 0.9655759
 * charDollar: 0.9803652
-* **0.9989724** (Bestes Ergebnis mit threshold 0.1, probiert 0.2, 0.1 und 0)
+* free and remove: **0.9989724** (Bestes Ergebnis mit threshold 0.1, probiert 0.2, 0.1 und 0)
 
 
 ### threshold grösser als 0 charExclamation
