@@ -1,13 +1,12 @@
-#install.packages("caret")
-#install.packages("ggplot2")
-#install.packages("sqldf")
-#install.packages("e1071")
-#install.packages("rmarkdown")
+install.packages("caret")
+install.packages("ggplot2")
+install.packages("sqldf")
+install.packages("e1071")
 library(ggplot2)
 library(caret)
 library(sqldf)
 library(e1071)
-library(rmarkdown)
+
 
 # set the working directory to the proper folder
 # you can either give in the path or click on Session and then Set Working Directory
@@ -83,6 +82,27 @@ probEisSpam <- function(dataSet, event, threshold){
   return(probability)
 }
 
+#Wahrscheinleichkeit, das 2 Wörter in einem Spam Mail vorkommen
+probEisSpamtwoInputs <- function(dataSet, event1,event2, threshold){
+  
+  colNumber1 <- match(event1, names(dataSet))
+  colNumber2 <- match(event2, names(dataSet))
+  
+  nrowSpamandEvent <- nrow(dataSet[dataSet$type == "spam" & dataSet[colNumber1] > threshold & dataSet[colNumber2] > threshold,])
+  nrowSpam <- nrow(dataSet[dataSet$type == "spam",])
+  
+  pSpamandEvent <- nrowSpamandEvent / nrowSpam
+  
+  nrowNonSpamandEvent <- nrow(dataSet[dataSet$type == "nonspam" & dataSet[colNumber1] > threshold & dataSet[colNumber2] > threshold,])
+  nrowNonSpam <- nrow(dataSet[dataSet$type == "nonspam",])
+  
+  pNonSpamandEvent <- nrowNonSpamandEvent / nrowNonSpam
+  
+  probability <- pSpamandEvent*0.9/(pSpamandEvent*0.9 + pNonSpamandEvent*0.1)
+  
+  return(probability)
+}
+
 pwill <- probEisSpam(trainSet, "will",0)
 pwill
 pyou <- probEisSpam(trainSet, "you",0)
@@ -96,6 +116,8 @@ pExclamation
 pDollar <- probEisSpam(trainSet, "charDollar",0)
 pDollar
 
+pfreeandremove <- probEisSpamtwoInputs(trainSet, "free", "remove", 0)
+pfreeandremove
 
 #Create confusion matrix for training charExclamation
 trainSet$singlecharExclamation <- "filternonspam"
@@ -112,6 +134,16 @@ trainSet$both <- "filternonspam"
 trainSet$both[trainSet$remove > 0 & trainSet$charExclamation > 0] <- "filterspam"
 table(trainSet$both, trainSet$type)
 
+#Create Confusion matrix for free and remove training
+trainSet$freeremove <- "filternonspam"
+trainSet$freeremove[trainSet$remove > 0.1 & trainSet$free > 0.1] <- "filterspam"
+table(trainSet$freeremove, trainSet$type)
+
+#Create Confusion matrix for free and remove testing
+testSet$freeremove <- "filternonspam"
+testSet$freeremove[testSet$remove > 0.1 & testSet$charExclamation > 0.1] <- "filterspam"
+freeremovetable <- table(testSet$freeremove, testSet$type)
+barplot(freeremovetable, beside=TRUE, legend = TRUE)
 
 View(trainSet)
 
@@ -124,6 +156,7 @@ testSet <- spam[-trainIndex,]
 
 Naive_Bayes_Model <- naiveBayes(type ~., data=trainSet)
 Naive_Bayes_Model
+
 
 #Prediction on the dataset
 NB_Predictions <- predict(Naive_Bayes_Model,testSet)

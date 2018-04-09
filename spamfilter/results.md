@@ -16,6 +16,7 @@
 * remove: 0.9961374
 * charExclamation: 0.9655759
 * charDollar: 0.9803652
+* **0.9989724** (Bestes Ergebnis mit threshold 0.1, probiert 0.2, 0.1 und 0)
 
 
 ### threshold grösser als 0 charExclamation
@@ -62,6 +63,21 @@ Fast keine mehr werden fälschlicherweise als spam erkannt, dafür landen viele 
 | ------------- |:-------------:| :-----:|
 | filternonspam     | 2212 | 911 |
 | filterspam     |  19 |  540  |
+
+### threshold grösser als 0.1 free und remove
+threshold 0.1 weil bei free die meisten welche als spam klassifiziert wurden bei ca 0.1 sind. (siehe plot zu free)
+#### Training
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 2227 | 1170 |
+| filterspam     |  4 |  281  |
+
+#### Testing
+|         | nonspam           | spam  |
+| ------------- |:-------------:| :-----:|
+| filternonspam     | 555 | 251 |
+| filterspam     |  2 |  111  |
+![free remove table graph](freeremoveresultgraph.png "free remove table graph")
 
 ## Ergebnisse von der Naive Bayes Library
 
